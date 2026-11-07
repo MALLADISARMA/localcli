@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "localci"
+version = "0.1.0"
+description = "A free, offline-first CI/CD command-line tool."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+
+[project.scripts]
+localci = "localci.main:main"
+
+[tool.setuptools.packages.find]
+include = ["localci*"]
