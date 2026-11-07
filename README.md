@@ -1,16 +1,32 @@
 # LocalCI
 
-LocalCI is a free, offline-first CI/CD command-line tool. Its objective is to
-help developers run local linting, tests, and build checks from one command.
-Phase 1 provides the CLI foundation using Python 3.10+ and only the standard
-library at runtime.
+LocalCI is a free, offline-first command-line tool for running common CI checks
+locally. Its long-term goal is to help developers run linting, tests, and build
+verification for their projects from one command, without requiring a hosted
+CI service.
 
-LocalCI does not make network requests and requires no AI, cloud service, API
-key, or external runtime dependency.
+This repository currently contains **Phase 1: the CLI foundation**. It provides
+the `init`, `run`, `status`, and `clean` commands. Pipeline execution and
+execution history are not implemented yet: `run` and `status` print notices
+about their planned phases.
+
+LocalCI is designed to work locally and offline. It does not require AI, cloud
+services, API keys, or network access to run its Phase 1 commands.
+
+## Technology stack
+
+- **Language:** Python 3.10 or newer
+- **Command-line parsing:** `argparse`
+- **Filesystem paths and configuration:** `pathlib` and `json`
+- **Tests:** Python's built-in `unittest`
+- **Runtime dependencies:** Python standard library only
+- **Packaging:** `pyproject.toml` with a `localci` console entry point
+- **Continuous integration:** GitHub Actions runs the unit tests on Python
+  3.10–3.13 for pushes and pull requests targeting `main`
 
 ## Installation
 
-From the project directory, install the command in editable mode:
+From the repository root, install the command in editable mode:
 
 ```powershell
 python -m pip install -e .
@@ -21,30 +37,34 @@ python -m pip install -e .
 - `localci --help` displays help.
 - `localci --version` displays the installed version.
 - `localci init` creates `.localci.json` in the current directory using that
-  directory's name as the project name. It does not replace an existing file.
-- `localci run` displays a placeholder; pipeline execution is planned for Phase 2.
-- `localci status` displays a placeholder; execution history is planned for
+  directory's name as the project name. It never replaces an existing file.
+- `localci run` prints a placeholder; pipeline execution is planned for Phase 2.
+- `localci status` prints a placeholder; execution history is planned for
   Phase 4.
-- `localci clean` asks before deleting only `.localci.json`.
+- `localci clean` asks for confirmation before deleting only `.localci.json`.
 - `localci clean --yes` skips the confirmation prompt.
 
 ## Example
 
-Run commands from the project directory you want LocalCI to manage:
+Run commands from the project directory you want LocalCI to manage. For example:
 
 ```powershell
 cd C:\path\to\your-project
 localci init
-localci run
-localci status
+Get-Content .localci.json
 localci clean
 ```
 
-## Future plans
+The `init` command creates a starter configuration containing the project name,
+settings, and an empty stages list. The `clean` command removes only that
+configuration file; it leaves other project files untouched.
 
-Future phases may add local pipeline execution and execution history. They are
-not part of Phase 1. Language detection, Git integration, reports, Docker,
-parallel execution, dependency graphs, and AI functionality are not implemented.
+## Scope and future phases
+
+Phase 1 does not run pipelines or record execution history. Future phases may
+add those capabilities. Language detection, language-specific adapters, Git
+integration, reports, parallel execution, dependency graphs, Docker, and AI
+functionality are also outside the current scope.
 
 ## Tests
 
@@ -55,5 +75,5 @@ python -m unittest discover -s tests -v
 ```
 
 GitHub Actions runs this test suite on pushes and pull requests targeting
-`main`, using Python 3.10 through 3.13. The workflow checks out the code and
-runs the tests; it does not publish or deploy the package.
+`main`. The workflow checks out the code and runs the tests; it does not publish
+or deploy the package.
