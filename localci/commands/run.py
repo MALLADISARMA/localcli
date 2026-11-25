@@ -1,12 +1,16 @@
 """Implementation of the run command."""
 
-from localci.utils.constants import SUCCESS
+from pathlib import Path
+
+from localci.core.config_loader import load_config
+from localci.core.runner import run_pipeline
+from localci.utils.constants import CONFIG_FILENAME
 
 
 def run_command() -> int:
-    """Display the Phase 1 pipeline execution notice."""
-    print(
-        "Pipeline execution is not implemented yet. "
-        "It will be available in Phase 2."
-    )
-    return SUCCESS
+    """Load configuration and execute all configured pipeline stages."""
+    working_directory = Path.cwd()
+    config_path = working_directory / CONFIG_FILENAME
+    configuration = load_config(config_path)
+    summary = run_pipeline(configuration, working_directory=working_directory)
+    return summary["exit_code"]
