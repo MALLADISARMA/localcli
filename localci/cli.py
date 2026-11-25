@@ -57,7 +57,7 @@ def main(argv: Sequence[str] | None = None) -> int:
         parser.print_help()
         return SUCCESS
     except LocalCIError as error:
-        parser.exit(GENERAL_ERROR, f"localci: error: {error}\n")
+        parser.exit(error.exit_code, f"localci: error: {error}\n")
     except KeyboardInterrupt:
         print("\nOperation interrupted.")
         return INTERRUPTED
